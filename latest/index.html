@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Basic arithmetic, integration, differentiation, evaluation, and root finding over dense univariate polynomials.">
+  <meta name="author" content="Jameson Nash and other contributors">
+  
+  <title>Polynomials.jl</title>
+  
+
+  <link rel="shortcut icon" href="./img/favicon.ico">
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="./css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="./css/highlight.css">
+  <link href="./assets/Documenter.css" rel="stylesheet">
+
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "None";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = "/";
+  </script>
+  
+  <script src="./js/jquery-2.1.1.min.js"></script>
+  <script src="./js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="./js/highlight.pack.js"></script>
+  <script src="./js/theme.js"></script> 
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script src="./assets/mathjaxhelper.js"></script>
+
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> Polynomials.jl</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href=".">Home</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#polynomialsjl">Polynomials.jl</a></li>
+                
+            
+            </ul>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">Polynomials.jl</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Home</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        
+          <a href="https://github.com/Keno/Polynomials.jl" class="icon icon-github"> Edit on GitHub</a>
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p><a id='Polynomials.jl-1'></a></p>
+<h1 id="polynomialsjl">Polynomials.jl</h1>
+<ul>
+<li><a href=".#Polynomials.Poly"><code>Polynomials.Poly</code></a></li>
+<li><a href=".#Base.LinAlg.norm"><code>Base.LinAlg.norm</code></a></li>
+<li><a href=".#Base.chop"><code>Base.chop</code></a></li>
+<li><a href=".#Base.gcd"><code>Base.gcd</code></a></li>
+<li><a href=".#Base.getindex"><code>Base.getindex</code></a></li>
+<li><a href=".#Base.length"><code>Base.length</code></a></li>
+<li><a href=".#Base.truncate"><code>Base.truncate</code></a></li>
+<li><a href=".#Polynomials.coeffs"><code>Polynomials.coeffs</code></a></li>
+<li><a href=".#Polynomials.degree"><code>Polynomials.degree</code></a></li>
+<li><a href=".#Polynomials.poly"><code>Polynomials.poly</code></a></li>
+<li><a href=".#Polynomials.polyder"><code>Polynomials.polyder</code></a></li>
+<li><a href=".#Polynomials.polyfit"><code>Polynomials.polyfit</code></a></li>
+<li><a href=".#Polynomials.polyint"><code>Polynomials.polyint</code></a></li>
+<li><a href=".#Polynomials.polyval"><code>Polynomials.polyval</code></a></li>
+<li><a href=".#Polynomials.roots"><code>Polynomials.roots</code></a></li>
+<li><a href=".#Polynomials.variable"><code>Polynomials.variable</code></a></li>
+</ul>
+<p><a id='Polynomials.Poly' href='#Polynomials.Poly'>#</a>
+<strong><code>Polynomials.Poly</code></strong> &mdash; <em>Type</em>.</p>
+<ul>
+<li><code>Poly{T&lt;:Number}(a::Vector)</code>: Construct a polynomial from its coefficients, lowest order first. That is if <code>p=a_n x^n + ... + a_2 x^2 + a_1 x^1 + a_0</code>, we construct this through <code>Poly([a_0, a_1, ..., a_n])</code>.</li>
+</ul>
+<p>Example:</p>
+<pre><code>Poly([1,0,3,4])    # Poly(1 + 3x^2 + 4x^3)
+</code></pre>
+
+<p>An optional variable parameter can be added:</p>
+<pre><code>Poly([1,2,3], :s)       # Poly(1 + 2s + 3s^2)
+</code></pre>
+
+<p>The usual arithmetic operators are overloaded to work on polynomials, and combinations of polynomials and scalars.</p>
+<pre><code>p = Poly([1,2])        # Poly(1 + 2x)
+q = Poly([1, 0, -1])   # Poly(1 - x^2)
+2p                     # Poly(2 + 4x)
+2+p                    # Poly(3 + 2x)
+p - q                  # Poly(2x + x^2)
+p*q                    # Poly(1 + 2x - x^2 - 2x^3)
+q/2                    # Poly(0.5 - 0.5x^2)
+</code></pre>
+
+<p>Note that operations involving polynomials with different variables will error:</p>
+<pre><code class="j">p = Poly([1, 2, 3], :x)
+q = Poly([1, 2, 3], :s)
+p + q                  # ERROR: Polynomials must have same variable.
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L26-61' class='documenter-source'>source</a><br>
+<a id='Base.LinAlg.norm' href='#Base.LinAlg.norm'>#</a>
+<strong><code>Base.LinAlg.norm</code></strong> &mdash; <em>Function</em>.</p>
+<ul>
+<li><code>norm(q::Poly, [p])</code>: return <code>p</code> norm of polynomial <code>q</code></li>
+</ul>
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L182-186' class='documenter-source'>source</a><br>
+<a id='Base.chop' href='#Base.chop'>#</a>
+<strong><code>Base.chop</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>chop(p::Poly{T}; kwargs...)</code> chop off leading values which are approximately zero. The tolerances are passed to <code>isapprox</code>.</p>
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L163-168' class='documenter-source'>source</a><br>
+<a id='Base.gcd' href='#Base.gcd'>#</a>
+<strong><code>Base.gcd</code></strong> &mdash; <em>Function</em>.</p>
+<ul>
+<li><code>gcd(a::Poly, b::Poly)</code>: Finds the Greatest Common Denominator of     two polynomials recursively using <a href="http://en.wikipedia.org/wiki/Polynomial_greatest_common_divisor#Euclid.27s_algorithm">Euclid's     algorithm</a>.</li>
+</ul>
+<p>Example:</p>
+<pre><code>gcd(poly([1,1,2]), poly([1,2,3])) # returns (x-1)*(x-2)
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L466-476' class='documenter-source'>source</a><br>
+<a id='Base.getindex' href='#Base.getindex'>#</a>
+<strong><code>Base.getindex</code></strong> &mdash; <em>Function</em>.</p>
+<ul>
+<li><code>getindex(p::Poly, i)</code>: If <code>p=a_n x^n + a_{n-1}x^{n-1} + ... + a_1 x^1 + a_0</code>, then <code>p[i]</code> returns <code>a_i</code>.</li>
+</ul>
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L189-193' class='documenter-source'>source</a><br>
+<a id='Base.length' href='#Base.length'>#</a>
+<strong><code>Base.length</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>legnth(p::Poly)</code>: return length of coefficient vector</p>
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L116-120' class='documenter-source'>source</a><br>
+<a id='Base.truncate' href='#Base.truncate'>#</a>
+<strong><code>Base.truncate</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>truncate{T}(p::Poly{T}; reltol = eps(T), abstol = eps(T))</code>: returns a polynomial with coefficients a_i truncated to zero if |a_i| &lt;= reltol*maxabs(a)+abstol</p>
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L151-155' class='documenter-source'>source</a><br>
+<a id='Polynomials.coeffs' href='#Polynomials.coeffs'>#</a>
+<strong><code>Polynomials.coeffs</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>coeffs(p::Poly)</code>: return coefficient vector [a_0, a_1, ..., a_n]</p>
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L131-135' class='documenter-source'>source</a><br>
+<a id='Polynomials.degree' href='#Polynomials.degree'>#</a>
+<strong><code>Polynomials.degree</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>degree(p::Poly)</code>: return degree of polynomial <code>p</code></p>
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L124-128' class='documenter-source'>source</a><br>
+<a id='Polynomials.poly' href='#Polynomials.poly'>#</a>
+<strong><code>Polynomials.poly</code></strong> &mdash; <em>Function</em>.</p>
+<ul>
+<li><code>poly(r::AbstractVector)</code>: Construct a polynomial from its   roots. This is in contrast to the <code>Poly</code> constructor, which   constructs a polynomial from its coefficients.</li>
+</ul>
+<p>Example:</p>
+<pre><code>## Represents (x-1)*(x-2)*(x-3)
+poly([1,2,3])     # Poly(-6 + 11x - 6x^2 + x^3)
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L80-91' class='documenter-source'>source</a><br>
+<a id='Polynomials.polyder' href='#Polynomials.polyder'>#</a>
+<strong><code>Polynomials.polyder</code></strong> &mdash; <em>Function</em>.</p>
+<ul>
+<li><code>polyder(p::Poly)</code>: Differentiate the polynomial <code>p</code> term by   term. The order of the resulting polynomial is one lower than the   order of <code>p</code>.</li>
+</ul>
+<p>Example:</p>
+<pre><code>polyder(Poly([1, 3, -1]))   # Poly(3 - 2x)
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L374-384' class='documenter-source'>source</a><br>
+<a id='Polynomials.polyfit' href='#Polynomials.polyfit'>#</a>
+<strong><code>Polynomials.polyfit</code></strong> &mdash; <em>Function</em>.</p>
+<p><code>polyfit(x, y, n=length(x)-1, sym=:x )</code>: Fit a polynomial of degree <code>n</code> through the points specified by <code>x</code> and <code>y</code> where <code>n &lt;= length(x) - 1</code> using least squares fit. When <code>n=length(x)-1</code> (the default), the interpolating polynomial is returned. The optional fourth argument can be used to pass the symbol for the returned polynomial.</p>
+<p>Example:</p>
+<pre><code>xs = linspace(0, pi, 5)
+ys = map(sin, xs)
+polyfit(xs, ys, 2)
+</code></pre>
+
+<p>Original by <a href="https://github.com/Keno/Polynomials.jl/issues/19">ggggggggg</a></p>
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L488-505' class='documenter-source'>source</a><br>
+<a id='Polynomials.polyint' href='#Polynomials.polyint'>#</a>
+<strong><code>Polynomials.polyint</code></strong> &mdash; <em>Function</em>.</p>
+<ul>
+<li><code>polyint(p::Poly, k::Number=0)</code>: Integrate the polynomial <code>p</code> term   by term, optionally adding constant term <code>k</code>. The order of the   resulting polynomial is one higher than the order of <code>p</code>.</li>
+</ul>
+<p>Examples:</p>
+<pre><code>polyint(Poly([1, 0, -1]))     # Poly(x - 0.3333333333333333x^3)
+polyint(Poly([1, 0, -1]), 2)  # Poly(2.0 + x - 0.3333333333333333x^3)
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L350-362' class='documenter-source'>source</a><br>
+<a id='Polynomials.polyval' href='#Polynomials.polyval'>#</a>
+<strong><code>Polynomials.polyval</code></strong> &mdash; <em>Function</em>.</p>
+<ul>
+<li><code>polyval(p::Poly, x::Number)</code>: Evaluate the polynomial <code>p</code> at <code>x</code> using Horner's method.</li>
+</ul>
+<p>Example:</p>
+<pre><code>polyval(Poly([1, 0, -1]), 0.1)  # 0.99
+</code></pre>
+
+<p>For <code>julia</code> version <code>0.4</code> or greater, the <code>call</code> method can be used:</p>
+<pre><code>p = Poly([1,2,3])
+p(4)   # 57 = 1 + 2*4 + 3*4^2
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L314-329' class='documenter-source'>source</a><br>
+<a id='Polynomials.roots' href='#Polynomials.roots'>#</a>
+<strong><code>Polynomials.roots</code></strong> &mdash; <em>Function</em>.</p>
+<ul>
+<li><code>roots(p::Poly)</code>: Return the roots (zeros) of <code>p</code>, with   multiplicity. The number of roots returned is equal to the order of   <code>p</code>. The returned roots may be real or complex.</li>
+</ul>
+<p>Examples:</p>
+<pre><code>roots(Poly([1, 0, -1]))    # [-1.0, 1.0]
+roots(Poly([1, 0, 1]))     # [0.0+1.0im, 0.0-1.0im]
+roots(Poly([0, 0, 1]))     # [0.0, 0.0]
+roots(poly([1,2,3,4]))     # [1.0,2.0,3.0,4.0]
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L416-429' class='documenter-source'>source</a><br>
+<a id='Polynomials.variable' href='#Polynomials.variable'>#</a>
+<strong><code>Polynomials.variable</code></strong> &mdash; <em>Function</em>.</p>
+<p>Return the indeterminate of a polynomial, <code>x</code>.</p>
+<ul>
+<li><code>variable(p::Poly)</code>: return variable of <code>p</code> as a <code>Poly</code> object.</li>
+<li><code>variable(T&lt;:Number, [:x])</code>: return poly one(T)*x</li>
+<li><code>variable([var::Symbol])</code>: return polynomial 1x over <code>Float64</code>.</li>
+</ul>
+<p><a target='_blank' href='https://github.com/mortenpi/Polynomials.jl/tree/b3398a82efb9c7425135f82e425298ac961d0ec9/src/Polynomials.jl#L138-146' class='documenter-source'>source</a><br></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/Keno/Polynomials.jl" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+      
+    </span>
+</div>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 0.15.3
+Build Date UTC : 2016-05-29 19:23:32.636725
+-->
