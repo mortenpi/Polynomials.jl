@@ -10,3 +10,7 @@ notifications:
   email: false
 sudo: required
 dist: trusty
+
+after_success:
+  - julia -e 'Pkg.clone("https://github.com/JuliaDocs/Documenter.jl")'
+  - julia -e 'cd(Pkg.dir("Polynomials")); include(joinpath("docs", "make.jl"))'
