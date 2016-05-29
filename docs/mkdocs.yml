@@ -1,0 +1,27 @@
+# See the mkdocs user guide for more information on these settings.
+#   http://www.mkdocs.org/user-guide/configuration/
+
+site_name:        Polynomials.jl
+repo_url:         https://github.com/Keno/Polynomials.jl
+site_description: Basic arithmetic, integration, differentiation, evaluation, and root finding over dense univariate polynomials.
+site_author:      Jameson Nash and other contributors
+
+theme: readthedocs
+
+extra_css:
+  - assets/Documenter.css
+
+extra_javascript:
+  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+  - assets/mathjaxhelper.js
+
+markdown_extensions:
+  - extra
+  - tables
+  - fenced_code
+  - mdx_math
+
+docs_dir: 'build'
+
+pages:
+  - Home: index.md
